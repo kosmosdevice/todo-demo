@@ -14,7 +14,7 @@ export class TodoService {
   private apiUrl = 'http://localhost:5052/todos';
   todos = signal<Todo[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   loadTodos() {
     this.http.get<Todo[]>(this.apiUrl).subscribe(todos => {
@@ -29,13 +29,15 @@ export class TodoService {
   }
 
   completeTodo(id: number) {
-    this.http.put<Todo>(`${this.apiUrl}/{id}`, {}).subscribe(() => {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('URL:', url);
+    this.http.put<Todo>(`${this.apiUrl}/${id}`, {}).subscribe(() => {
       this.loadTodos();
     });
   }
 
   deleteTodo(id: number) {
-    this.http.delete<Todo>(`${this.apiUrl}/{id}`, {}).subscribe(() => {
+    this.http.delete<Todo>(`${this.apiUrl}/${id}`, {}).subscribe(() => {
       this.loadTodos();
     });
   }
