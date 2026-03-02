@@ -27,5 +27,17 @@ export class TodoService {
       this.loadTodos();
     });
   }
+
+  completeTodo(id: number) {
+    this.http.put<Todo>(`${this.apiUrl}/{id}`, {}).subscribe(() => {
+      this.loadTodos();
+    });
+  }
+
+  deleteTodo(id: number) {
+    this.http.delete<Todo>(`${this.apiUrl}/{id}`, {}).subscribe(() => {
+      this.loadTodos();
+    });
+  }
 }
 
