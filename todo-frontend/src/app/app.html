@@ -1,0 +1,11 @@
+<h1>Todo App</h1>
+
+<input [(ngModel)]="newTodoTitle" placeholder="Add a todo..." />
+<button (click)="addTodo()">Add</button>
+
+<ul>
+  @for (todo of todoService.todos(); track todo.id) {
+    <li>{{ todo.title }}</li>
+  }
+</ul>
+

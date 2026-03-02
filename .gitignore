@@ -1,0 +1,16 @@
+# Build output
+bin/
+obj/
+
+# User specific
+*.user
+.vs/
+
+# Logs
+*.log
+
+# Environment
+appsettings.Development.json
+
+# dotnet
+project.lock.json
