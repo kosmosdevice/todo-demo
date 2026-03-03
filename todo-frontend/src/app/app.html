@@ -1,6 +1,13 @@
 <h1>Todo App</h1>
 
-<input [(ngModel)]="newTodoTitle" (keyup.enter)="addTodo()" placeholder="Add a todo..." />
+<input [(ngModel)]="newTodoTitle"
+        (keyup.enter)="addTodo()"
+        (input)="errorMessage = ''"
+        placeholder="Add a todo..." />
+
+@if (errorMessage) {
+  <div style="color: red;">{{ errorMessage }}</div>
+}
 <button (click)="addTodo()">Add</button>
 
 <ul>
@@ -14,4 +21,3 @@
     </li>
   }
 </ul>
-

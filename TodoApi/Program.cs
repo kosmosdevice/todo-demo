@@ -32,6 +32,10 @@ app.MapGet("/todos", (TodoDbContext db) => db.Todos.ToList());
 
 app.MapPost("/todos", (TodoDbContext db, string title) =>
 {
+    if (string.IsNullOrWhiteSpace(title))
+    {
+        return Results.BadRequest("Title is required");
+    }
     var todo = new Todo { Title = title, IsCompleted = false };
     db.Todos.Add(todo);
     db.SaveChanges();

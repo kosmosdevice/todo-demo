@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 export class App implements OnInit {
   todoService = inject(TodoService);
   newTodoTitle = '';
+  errorMessage = '';
 
   ngOnInit() {
     this.todoService.loadTodos();
@@ -20,7 +21,10 @@ export class App implements OnInit {
     if (this.newTodoTitle.trim()) {
       this.todoService.addTodo(this.newTodoTitle);
       this.newTodoTitle = '';
+      this.errorMessage = '';
+    }
+    else {
+      this.errorMessage = "Title required";
     }
   }
 }
-
