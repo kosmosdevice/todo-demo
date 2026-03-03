@@ -15,3 +15,6 @@ appsettings.Development.json
 # dotnet
 project.lock.json
 .vscode/
+
+#database
+todos.db*
