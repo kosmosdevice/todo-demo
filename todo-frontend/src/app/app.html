@@ -9,7 +9,7 @@
       <span [style.text-decoration]="todo.isCompleted ? 'line-through' : 'none'">
         {{ todo.title }}
       </span>
-      <button (click)="todoService.completeTodo(todo.id)">✅</button>
+      <button (click)="todoService.updateTodo(todo)">✅</button>
       <button (click)="todoService.deleteTodo(todo.id)">🗑️</button>
     </li>
   }

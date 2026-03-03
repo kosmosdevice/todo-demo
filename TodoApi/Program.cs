@@ -32,18 +32,19 @@ app.MapGet("/todos", (TodoDbContext db) => db.Todos.ToList());
 
 app.MapPost("/todos", (TodoDbContext db, string title) =>
 {
-    var todo = new Todo{ Title = title, IsCompleted = false };
+    var todo = new Todo { Title = title, IsCompleted = false };
     db.Todos.Add(todo);
     db.SaveChanges();
     return Results.Created($"/todos/{todo.Id}", todo);
 });
 
-app.MapPut("/todos/{id}", (TodoDbContext db, int id) =>
+app.MapPut("/todos/{id}", (TodoDbContext db, int id, Todo updatedTodo) =>
 {
     var todo = db.Todos.FirstOrDefault(t => t.Id == id);
     if (todo is null) return Results.NotFound();
 
-    todo.IsCompleted=true;
+    todo.IsCompleted = updatedTodo.IsCompleted;
+    todo.Title = updatedTodo.Title;
     db.SaveChanges();
     return Results.Ok(todo);
 });
@@ -61,8 +62,8 @@ app.Run();
 
 public class TodoDbContext : DbContext
 {
-    public TodoDbContext( DbContextOptions<TodoDbContext> options) : base(options) {}
-    public required DbSet<Todo> Todos {get; set;}
+    public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options) { }
+    public required DbSet<Todo> Todos { get; set; }
 }
 
 public class Todo

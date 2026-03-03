@@ -28,10 +28,11 @@ export class TodoService {
     });
   }
 
-  completeTodo(id: number) {
-    const url = `${this.apiUrl}/${id}`;
+  updateTodo(todo: Todo) {
+    const url = `${this.apiUrl}/${todo.id}`;
     console.log('URL:', url);
-    this.http.put<Todo>(`${this.apiUrl}/${id}`, {}).subscribe(() => {
+    const updatedTodo = { ...todo, isCompleted: !todo.isCompleted };
+    this.http.put<Todo>(`${this.apiUrl}/${todo.id}`, updatedTodo).subscribe(() => {
       this.loadTodos();
     });
   }
