@@ -1,3 +1,5 @@
+using TodoApi.Models;
+using TodoApi.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,16 +65,3 @@ app.MapDelete("/todos/{id}", (TodoDbContext db, int id) =>
 });
 
 app.Run();
-
-public class TodoDbContext : DbContext
-{
-    public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options) { }
-    public required DbSet<Todo> Todos { get; set; }
-}
-
-public class Todo
-{
-    public int Id { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public bool IsCompleted { get; set; }
-}
