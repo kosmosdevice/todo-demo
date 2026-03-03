@@ -38,8 +38,18 @@ export class TodoService {
   }
 
   deleteTodo(id: number) {
-    this.http.delete<Todo>(`${this.apiUrl}/${id}`, {}).subscribe(() => {
-      this.loadTodos();
+    const currentTodos = this.todos();
+    const todoToDelete = currentTodos.find(t => t.id == id);
+
+    this.todos.update( todos => todos.filter(t => t.id != id));
+
+    this.http.delete<Todo>(`${this.apiUrl}/${id}`, {}).subscribe({
+      error: (err) => {
+        if (todoToDelete) {
+          this.todos.update(todos => [...todos, todoToDelete]);
+          console.error('Delete failed, rolling back', err);
+        }
+      }
     });
   }
 }
