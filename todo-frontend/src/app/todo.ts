@@ -23,8 +23,23 @@ export class TodoService {
   }
 
   addTodo(title: string) {
-    this.http.post<Todo>(`${this.apiUrl}?title=${title}`, {}).subscribe(() => {
-      this.loadTodos();
+    const tempId = Date.now();
+    const tempTodo: Todo = { id: tempId, title: title, isCompleted: false };
+
+    this.todos.update(current => [...current, tempTodo]);
+
+    this.http.post<Todo>(`${this.apiUrl}?title=${title}`, {}).subscribe({
+      next: (savedTodo) => {
+        this.todos.update(current =>
+          current.map(t => t.id === tempId ? savedTodo : t)
+        );
+      },
+      error: (err) => {
+        this.todos.update(current =>
+          current.filter(t => t.id !== tempId)
+        );
+        console.error('Failed to add todo', err);
+      }
     });
   }
 
@@ -41,7 +56,7 @@ export class TodoService {
     const currentTodos = this.todos();
     const todoToDelete = currentTodos.find(t => t.id == id);
 
-    this.todos.update( todos => todos.filter(t => t.id != id));
+    this.todos.update(todos => todos.filter(t => t.id != id));
 
     this.http.delete<Todo>(`${this.apiUrl}/${id}`, {}).subscribe({
       error: (err) => {
