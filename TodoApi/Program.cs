@@ -1,5 +1,6 @@
 using TodoApi.Models;
 using TodoApi.Data;
+using TodoApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<TodoDbContext>(options =>
 {
     options.UseSqlite("Data Source=todos.db");
 });
+builder.Services.AddScoped<ITodoService, TodoService>();
 
 var app = builder.Build();
 
@@ -30,37 +32,26 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-app.MapGet("/todos", (TodoDbContext db) => db.Todos.ToList());
+app.MapGet("/todos", (ITodoService service) => service.GetAll());
 
-app.MapPost("/todos", (TodoDbContext db, string title) =>
+app.MapPost("/todos", (ITodoService service, string title) =>
 {
     if (string.IsNullOrWhiteSpace(title))
-    {
         return Results.BadRequest("Title is required");
-    }
-    var todo = new Todo { Title = title, IsCompleted = false };
-    db.Todos.Add(todo);
-    db.SaveChanges();
+    var todo = service.Create(title);
     return Results.Created($"/todos/{todo.Id}", todo);
 });
 
-app.MapPut("/todos/{id}", (TodoDbContext db, int id, Todo updatedTodo) =>
+app.MapPut("/todos/{id}", (ITodoService service, int id, Todo updatedTodo) =>
 {
-    var todo = db.Todos.FirstOrDefault(t => t.Id == id);
-    if (todo is null) return Results.NotFound();
-
-    todo.IsCompleted = updatedTodo.IsCompleted;
-    todo.Title = updatedTodo.Title;
-    db.SaveChanges();
-    return Results.Ok(todo);
+    var updated = service.Update(id, updatedTodo);
+    return updated is null ? Results.NotFound() : Results.Ok(updated);
 });
 
-app.MapDelete("/todos/{id}", (TodoDbContext db, int id) =>
+app.MapDelete("/todos/{id}", (ITodoService service, int id) =>
 {
-    var todo = db.Todos.FirstOrDefault(t => t.Id == id);
-    if (todo is null) return Results.NotFound();
-    db.Todos.Remove(todo);
-    db.SaveChanges();
+    if (!service.Delete(id))
+        return Results.NotFound();
     return Results.NoContent();
 });
 
