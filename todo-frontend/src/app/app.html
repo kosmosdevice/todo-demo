@@ -1,6 +1,6 @@
 <h1>Todo App</h1>
 
-<input [(ngModel)]="newTodoTitle" placeholder="Add a todo..." />
+<input [(ngModel)]="newTodoTitle" (keyup.enter)="addTodo()" placeholder="Add a todo..." />
 <button (click)="addTodo()">Add</button>
 
 <ul>
