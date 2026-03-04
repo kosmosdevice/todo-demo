@@ -1,0 +1,6 @@
+<span [style.text-decoration]="todo().isCompleted ? 'line-through' : 'none'">
+    {{ todo().title }}
+</span>
+
+<button (click)="complete.emit(todo())">✅</button>
+<button (click)="delete.emit(todo().id)">🗑️</button>

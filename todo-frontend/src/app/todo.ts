@@ -10,6 +10,7 @@ export interface Todo {
 @Injectable({
   providedIn: 'root'
 })
+
 export class TodoService {
   private apiUrl = 'http://localhost:5052/todos';
   todos = signal<Todo[]>([]);

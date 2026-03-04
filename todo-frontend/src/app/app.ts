@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TodoService } from './todo';
+import { TodoItem } from './todo-item/todo-item';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule],
+  imports: [FormsModule, TodoItem],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

@@ -13,11 +13,11 @@
 <ul>
   @for (todo of todoService.todos(); track todo.id) {
     <li>
-      <span [style.text-decoration]="todo.isCompleted ? 'line-through' : 'none'">
-        {{ todo.title }}
-      </span>
-      <button (click)="todoService.updateTodo(todo)">✅</button>
-      <button (click)="todoService.deleteTodo(todo.id)">🗑️</button>
+      <app-todo-item
+        [todo]="todo"
+        (complete)="todoService.updateTodo($event)"
+        (delete)="todoService.deleteTodo($event)">
+      </app-todo-item>
     </li>
   }
 </ul>
