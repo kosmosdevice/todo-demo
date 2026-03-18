@@ -22,6 +22,17 @@ input {
   margin-right: 0.5rem;
 }
 
+.button-group {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+button.active {
+  background-color: #00b32d;
+  color: white;
+}
+
 button {
   padding: 0.5rem 1rem;
   background-color: #007bff;
@@ -33,6 +44,10 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+button.active:hover {
+  background-color: #004d13;
 }
 
 /* List items */

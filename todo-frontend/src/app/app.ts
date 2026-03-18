@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, computed, signal } from '@angular/core';
 import { TodoService } from './todo';
 import { TodoItem } from './todo-item/todo-item';
 import { FormsModule } from '@angular/forms';
@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
+
 export class App implements OnInit {
   todoService = inject(TodoService);
   newTodoTitle = '';
@@ -28,4 +29,18 @@ export class App implements OnInit {
       this.errorMessage = "Title required";
     }
   }
+
+  filter = signal<'all' | 'active' | 'completed'>('all');
+  filteredTodos = computed(() => {
+    const todos = this.todoService.todos();
+    const currentFilter = this.filter();
+    switch (currentFilter) {
+      case 'active':
+        return todos.filter(t => t.isCompleted == false);
+      case 'completed':
+        return todos.filter(t => t.isCompleted == true);
+      default:
+        return todos;
+    }
+  });
 }
