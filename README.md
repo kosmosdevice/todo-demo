@@ -2,6 +2,8 @@
 
 Because a paper and pen was simply not good enough.
 
+<img src="screen.png"/> <br>
+
 ## What Is This?
 
 A todo application built with .NET backend and Angular frontend.
